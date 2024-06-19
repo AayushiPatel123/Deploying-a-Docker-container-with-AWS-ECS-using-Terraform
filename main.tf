@@ -17,3 +17,11 @@ provider "aws" {
 resource "aws_ecr_repository" "app_ecr_repo" {
   name = "app-repo"
 }
+
+resource "aws_ecs_cluster" "cluster_sonarqube" {
+  name = "cluster_sonarqube"
+}
+
+output "ecs_cluster_id" {
+  value = aws_ecs_cluster.cluster_sonarqube.id
+} 
