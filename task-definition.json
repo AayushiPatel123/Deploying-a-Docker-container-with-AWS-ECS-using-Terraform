@@ -1,45 +1,37 @@
 {
     "family": "sonarqube-task",
     "networkMode": "awsvpc",
-    "executionRoleArn": "arn:aws:iam::<your-account-id>:role/ecsTaskExecutionRole",
-    "taskRoleArn": "arn:aws:iam::<your-account-id>:role/ecsTaskRole",
-    "requiresCompatibilities": [
-        "FARGATE"
-    ],
-    "cpu": "1024",
-    "memory": "2048",
     "containerDefinitions": [
-        {
-            "name": "sonarqube",
-            "image": "992382637396.dkr.ecr.us-east-1.amazonaws.com/app-repo:latest",
-            "portMappings": [
-                {
-                    "containerPort": 9000,
-                    "hostPort": 9000,
-                    "protocol": "tcp"
-                }
-            ],
-            "essential": true,
-            "environment": [],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-group": "/ecs/sonarqube",
-                    "awslogs-region": "us-east-1",
-                    "awslogs-stream-prefix": "ecs"
-                }
-            }
+      {
+        "name": "sonarqube",
+        "image": "123456789012.dkr.ecr.us-west-2.amazonaws.com/custom-sonarqube:latest",
+        "memory": 512,
+        "portMappings": [
+          {
+            "containerPort": 9000,
+            "hostPort": 9000
+          }
+        ],
+        "essential": true,
+        "environment": [
+          {
+            "name": "SONARQUBE_HOME",
+            "value": "/opt/sonarqube"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/sonarqube",
+            "awslogs-region": "us-west-2",
+            "awslogs-stream-prefix": "ecs"
+          }
         }
+      }
     ],
-    "networkConfiguration": {
-        "awsvpcConfiguration": {
-            "subnets": [
-                "subnet-0123456789abcdef0" // replace with your subnet ID
-            ],
-            "securityGroups": [
-                "sg-0123456789abcdef0" // replace with your security group ID
-            ],
-            "assignPublicIp": "ENABLED"
-        }
-    }
-}
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
+  }
+  
